@@ -87,4 +87,3 @@ A simple customer support triage dashboard built with SvelteKit + Tailwind. It i
   
   Env-based “mock mode” for demos or offline development.
 
-

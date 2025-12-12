@@ -1,39 +1,38 @@
-# sv
+# support-radar
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A simple customer support triage dashboard built with SvelteKit + Tailwind. It ingests 15–20 fake messages, categorises them (via OpenAI), assigns priority, and provides a compact UI to filter, resolve, and view summaries.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Dashboard summary (counts by Category and Priority)
+- Messages list with filters (Category, Priority, Search, Show resolved)
+- Resolve toggle (soft-delete into a Resolved bin)
+- AI triage endpoint to assign Category + Priority (bulk request to mitigate rate limits)
+- AI reply endpoint to generate a suggested customer response
+- Inline “Suggest reply” per message with loading/error states
+- Colored tags for quick scanning (high/urgent and bug are red)
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Tech stack
 
-# create a new project in my-app
-npx sv create my-app
-```
+- SvelteKit
+- Tailwind CSS
+- OpenAI API
+- In-memory data (no DB)
 
-## Developing
+## Project structure (high-level)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- `src/lib/types.ts`: Type definitions (`SupportMessage`, `Category`, `Priority`)
+- `src/lib/data/messages.ts`: 20 seed messages
+- `src/lib/server/db.ts`: In-memory store + helpers (list, upsert triage, toggle resolve)
+- `src/lib/components/`
+  - `SummaryCards.svelte`
+  - `Filters.svelte` (uses `$bindable` for two-way bindings)
+  - `MessageRow.svelte` (“Resolve” + “Suggest reply” UI)
+- `src/routes/`
+  - `+page.svelte`, `+page.server.ts`: Dashboard
+  - `messages/+page.svelte`, `+page.server.ts`: Message list + triage action
+  - `resolved/+page.svelte`, `+page.server.ts`: Resolved bin
+  - `api/triage/+server.ts`: Bulk triage via OpenAI
+  - `api/reply/+server.ts`: Suggested reply via OpenAI
+  - `api/messages/resolve/+server.ts`: Toggle resolved
 
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-# Support-Radar

@@ -36,3 +36,55 @@ A simple customer support triage dashboard built with SvelteKit + Tailwind. It i
   - `api/reply/+server.ts`: Suggested reply via OpenAI
   - `api/messages/resolve/+server.ts`: Toggle resolved
 
+
+ ## How to run the project
+ Prerequisites:
+
+    Node 18.18+ (or 20+)
+    
+    An OpenAI API key
+
+  Setup:
+    npm install
+
+  Create a .env file in the project root with:
+    OPENAI_API_KEY=sk-...
+
+  Development:
+    npm run dev
+    # visit http://localhost:5173
+
+## What Would I Improve With More Time
+  1. Message Ingestion (“Receiver”)
+
+  Add an ingest endpoint/worker for receiving live messages (webhooks, IMAP/SMTP bridge, provider integrations).
+  
+  Deduplicate, persist, and automatically queue triage.
+  
+  Show message lifecycle state in UI (“awaiting triage”, “triaged”, etc.).
+
+  2. Reply Approval & Sending (“Sender”)
+  
+  After generating a suggested reply, allow editing/approval and send via SMTP/SendGrid/Postmark.
+  
+  Track sent status, timestamps, and conversation history.
+  
+  3. Persistence & Reliability
+  
+  Replace in-memory storage with SQLite/Prisma.
+  
+  Add background jobs, retry/backoff for triage, and a deterministic keyword-rule fallback when AI is unavailable.
+  
+  4. UX Enhancements
+  
+  Avoid page reload after triage by merging results client-side (filters already persist after resolve).
+  
+  Add toasts, empty states, pagination/virtualized lists for larger datasets.
+  
+  5. Operational Improvements
+  
+  Structured logging, minimal metrics, visibility into rate limits.
+  
+  Env-based “mock mode” for demos or offline development.
+
+
